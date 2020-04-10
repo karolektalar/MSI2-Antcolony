@@ -110,6 +110,8 @@ if __name__ == "__main__":
         ant = Ant(copy.deepcopy(graph), np.random.rand(30, 30), pheromone_delta,ANT_CAPACITY, 0)
         list_of_ants.append(ant)
 
+    current_best_weight = 10000
+
     for i in range(0,51):
 
         for idx, ant in enumerate(list_of_ants):
@@ -119,7 +121,7 @@ if __name__ == "__main__":
         worst_weight = list_of_ants[0].weight_of_moves
         best_list_of_moves = list_of_ants[0].list_of_moves
         worst_list_of_moves = list_of_ants[0].list_of_moves
-        best_ant = list_of_ants[0]
+
         for idx, ant in enumerate(list_of_ants):
             if ant.weight_of_moves < best_weight:
                 best_weight = ant.weight_of_moves
@@ -132,8 +134,12 @@ if __name__ == "__main__":
 
         print(f"WORST WEIGHT at epoch {i}/50 : {str(worst_weight)}")
         #print("WORST MOVES: " + str(worst_list_of_moves))
-        print(f"BEST WEIGHT at epoch {i}/50 : {str(best_weight)}")
+        print(f"BEST WEIGHT at epoch {i}/50 : {str(best_weight)} loss = {current_best_weight - best_weight})")
         #print("BEST MOVES: " + str(best_list_of_moves))
+
+        if current_best_weight > best_weight:
+            current_best_weight = best_weight
+
         update_pheromone_after_epoch(list_of_ants, pheromone_delta)
         print("************-------------**************")
         pheromone_delta = np.zeros((30, 30))
