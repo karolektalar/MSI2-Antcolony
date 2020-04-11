@@ -1,0 +1,30 @@
+import numpy as np
+
+
+# FIXME this should be a class
+np.random.seed = 1
+
+GRAPH_SIZE = 30
+NUMBER_OF_ANTS = 100
+
+# HEURISTIC = "basic"
+# HEURISTIC = "exploitation"
+
+HEURISTIC = "savings"
+
+EXPLOITATION_CONSTANT = 0.5
+HEURISTIC_EXPONENT = 1
+PHEROMONE_EXPONENT = 3
+PHEROMONE = np.random.rand(GRAPH_SIZE, GRAPH_SIZE)
+EVAPORATE_RATE = 0.1
+
+#PHEROMONE_UPDATE = "basic"
+PHEROMONE_UPDATE = "elite"
+
+GLOBAL_UPDATE_STRATEGY = "best_solution"
+# GLOBAL_UPDATE_STRATEGY = "all_solutions"
+
+NUMBER_OF_ELITE_ANTS = 10
+PHEROMONE_EXPONENT = 3
+
+ANT_CAPACITY = 3
