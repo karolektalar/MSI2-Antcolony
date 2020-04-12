@@ -1,14 +1,12 @@
 from solution.ant import Ant
 import numpy as np
-
-from solution.config import ANT_CAPACITY
-
 from solution.move_probability import calculate_probability
+from solution.config import Config
 
 
-def ant_move(ant: Ant):
+def ant_move(ant: Ant, config: Config):
     while np.any(ant.graph):
-        move = calculate_move(ant)
+        move = calculate_move(ant, config)
         ant.capacity -= ant.graph[ant.current_position][move][1]
         if move == 0:
             ant.list_of_moves.append(0)
@@ -19,7 +17,7 @@ def ant_move(ant: Ant):
                     element[ant.current_position] = np.zeros((2))
                 ant.current_position = move
             ant.current_position = 0
-            ant.capacity = ANT_CAPACITY
+            ant.capacity = config.ant_capacity
         else:
             ant.list_of_moves.append(move)
             ant.weight_of_moves += ant.graph[ant.current_position][move][0]
@@ -31,7 +29,7 @@ def ant_move(ant: Ant):
     return ant
 
 
-def calculate_move(ant: Ant):
+def calculate_move(ant: Ant, config: Config):
     possible_moves = []
     for idx, move in enumerate(ant.graph[ant.current_position]):
         if idx == 0:
@@ -40,7 +38,7 @@ def calculate_move(ant: Ant):
             possible_moves.append(idx)
     if len(possible_moves) == 0:
         return 0
-    heuristic_probability = calculate_probability(ant = ant, possible_moves= possible_moves)
+    heuristic_probability = calculate_probability(ant = ant, possible_moves= possible_moves, config=config)
     random_number = np.random.rand()
     for idx, probability in enumerate(heuristic_probability):
         if random_number - probability < 0:

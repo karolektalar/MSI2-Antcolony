@@ -1,0 +1,29 @@
+---
+
+runs : 10
+
+ant_constants:
+  ant_capacity: 3
+  number_of_ants: 100
+
+pheromone:
+  local_update_strategy : "elite"
+  global_update_strategy: "best_solution"
+
+eliteness:
+  number_of_elite_ants: 10
+
+#TUTAJ CHYBA TRZEBA KOD ZMIENIC
+#test_1:
+#    heuristic: DUPA
+
+#Savings
+test:
+  heuristic: savings
+  graph_size: 30
+  seed: 1
+  vaporization: 0.3
+  exploitation_constant: 0.5
+  heuristic_exponent: 1
+  pheromone_exponent: 3
+
