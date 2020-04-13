@@ -7,6 +7,8 @@ from solution.config import Config
 def ant_move(ant: Ant, config: Config):
     while np.any(ant.graph):
         move = calculate_move(ant, config)
+        if move is None:
+            calculate_move(ant, config)
         ant.capacity -= ant.graph[ant.current_position][move][1]
         if move == 0:
             ant.list_of_moves.append(0)
@@ -38,7 +40,7 @@ def calculate_move(ant: Ant, config: Config):
             possible_moves.append(idx)
     if len(possible_moves) == 0:
         return 0
-    heuristic_probability = calculate_probability(ant = ant, possible_moves= possible_moves, config=config)
+    heuristic_probability = calculate_probability(ant=ant, possible_moves=possible_moves, config=config)
     random_number = np.random.rand()
     for idx, probability in enumerate(heuristic_probability):
         if random_number - probability < 0:

@@ -1,5 +1,5 @@
 import numpy as np
-from test.test_config import TestCaseConfig
+from tests.test_config import TestCaseConfig
 
 class Config:
     def __init__(self, seed: np.random.seed, graph_size: int, number_of_ants:int, pheromone : np.random.rand, global_updates_strategy: str, local_update_strategy: str, heuristic: str,capacity: int, exploit_const, heuristic_exp: float, pheromone_exp: float, evap_rate: float, number_of_elite_ants: int):

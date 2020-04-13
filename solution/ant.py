@@ -14,7 +14,7 @@ class Ant:
     def update_pheromone_on_path(self, delta: np.array):
         amount_of_moves = len(self.list_of_moves)
         for i in range(0,amount_of_moves-1):
-            delta[self.list_of_moves[i], self.list_of_moves[i+1]] += 1 / self.weight_of_moves
+            delta[self.list_of_moves[i]][self.list_of_moves[i+1]] += 1 / (100*self.weight_of_moves)
 
     def reset(self, graph: np.array):
         self.graph = graph
