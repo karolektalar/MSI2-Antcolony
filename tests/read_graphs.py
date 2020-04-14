@@ -6,31 +6,6 @@ from solution.config import Config
 from solution.aco import ACO
 from tests.test_config import AntConstants, PheremoneStrategy, ElitenessStrategy, TestCaseConfig, TestGraph
 
-GRAPH_SIZE = 30
-NUMBER_OF_ANTS = 100
-
-# HEURISTIC = "basic"
-# HEURISTIC = "exploitation"
-
-HEURISTIC = "savings"
-
-EXPLOITATION_CONSTANT = 0.5
-HEURISTIC_EXPONENT = 1
-PHEROMONE_EXPONENT = 3
-PHEROMONE = np.random.rand(GRAPH_SIZE, GRAPH_SIZE)
-PHEROMONE = [pheromone*100 for pheromone in PHEROMONE]
-EVAPORATE_RATE = 0.1
-
-#PHEROMONE_UPDATE = "basic"
-PHEROMONE_UPDATE = "elite"
-
-GLOBAL_UPDATE_STRATEGY = "best_solution"
-# GLOBAL_UPDATE_STRATEGY = "all_solutions"
-
-NUMBER_OF_ELITE_ANTS = 10
-
-ANT_CAPACITY = 3
-
 
 def parse_graph(filename: str):
     print(f"Parsing {filename}")
@@ -63,7 +38,7 @@ def parse_graph(filename: str):
                             first_coordinate[1] - second_coordinate[1]) ** 2)
                 graph[idx][idx2][1] = capacities[idx2][0]
 
-    return TestGraph(len(coordinates), graph, capacity_of_ant)
+    return [TestGraph(len(coordinates), graph, capacity_of_ant), optimal_value]
 
 
 def prepare_test_case_config(path_to_config):
@@ -80,13 +55,22 @@ def prepare_test_case(graph: TestGraph, test_case_config: TestCaseConfig):
     return Config.from_graph_and_config(test_case_config, graph)
 
 
-graph = parse_graph('A-n32-k5.vrp')
-yaml_config = prepare_test_case_config('./config.yaml')
-test_case_config = prepare_test_case(graph, yaml_config)
+results = []
+f = open("results.txt", "w+")
+for i in range(10):
+    for file in listdir("../data/Vrp-Set-A/A"):
+        graph, optimal_result = parse_graph(file)
+
+        yaml_config = prepare_test_case_config('./config.yaml')
+        test_case_config = prepare_test_case(graph, yaml_config)
 
 
 # FIXME iteration over files needed to be implemented
 
 
-aco = ACO(test_case_config)
-aco.run()
+        aco = ACO(test_case_config)
+        solution = aco.run()
+        result = solution[0]/optimal_result
+        print(result)
+        f.write(str(result) + "\n")
+    f.write("---------\n")

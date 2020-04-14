@@ -6,29 +6,8 @@ from solution.pheromone import update_pheromone_after_epoch, update_pheromone_fr
 from solution.config import Config
 import numpy as np
 
-GRAPH_SIZE = 30
-NUMBER_OF_ANTS = 100
 
-# HEURISTIC = "basic"
-# HEURISTIC = "exploitation"
-
-HEURISTIC = "savings"
-
-EXPLOITATION_CONSTANT = 0.5
-HEURISTIC_EXPONENT = 1
-PHEROMONE_EXPONENT = 3
-PHEROMONE = np.random.rand(GRAPH_SIZE, GRAPH_SIZE)
-EVAPORATE_RATE = 0.6
-
-#PHEROMONE_UPDATE = "basic"
-PHEROMONE_UPDATE = "elite"
-
-GLOBAL_UPDATE_STRATEGY = "best_solution"
-# GLOBAL_UPDATE_STRATEGY = "all_solutions"
-
-NUMBER_OF_ELITE_ANTS = 10
-
-ANT_CAPACITY = 3
+NUMBER_OF_EPOCHS = 300
 
 
 class ACO:
@@ -55,7 +34,7 @@ class ACO:
             self.list_of_ants.append(ant)
 
     def run(self):
-        for i in range(200):
+        for i in range(NUMBER_OF_EPOCHS):
             for idx, ant in enumerate(self.list_of_ants):
                 self.list_of_ants[idx] = ant_move(ant,self.config)
 
@@ -77,12 +56,13 @@ class ACO:
             loss = self.current_best_weight - best_weight
 
             if loss > 0:
-                print(f"WORST WEIGHT at epoch {i+1}/500 : {str(worst_weight)}")
+                # print(f"WORST WEIGHT at epoch {i+1}/"+str(NUMBER_OF_EPOCHS)+f" : {str(worst_weight)}")
                 # print("WORST MOVES: " + str(worst_list_of_moves))
-                print(f"BEST WEIGHT at epoch {i+1}/500 : {str(best_weight)} loss = {loss})")
+                print(f"BEST WEIGHT at epoch {i+1}/"+str(NUMBER_OF_EPOCHS)+f" : {str(best_weight)} loss = {loss})")
                 # print("BEST MOVES: " + str(best_list_of_moves))
                 print("************-------------**************")
-            print(f"Epoch {i}/200")
+            if i % 100 == 0:
+                print(f"Epoch {i}/"+str(NUMBER_OF_EPOCHS))
             if self.current_best_weight > best_weight:
                 self.current_best_weight = best_weight
                 current_best_list_of_moves = best_list_of_moves

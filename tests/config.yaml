@@ -4,44 +4,43 @@ runs : 10
 
 ant_constants:
   ant_capacity: 100
-  number_of_ants: 400
+  number_of_ants: 10
 
 pheromone:
   local_update_strategy : "elite" #hipoteza 3.4
   #global_update_strategy: "all_solutions" # hipoteza 3.5 ? nie wiem czy nie musimy wywalic globalnej akutalizacji
-  global_update_strategy: "best_solution" # test dla hipotezy 3.3
+  global_update_strategy: "all_solutions" # test dla hipotezy 3.3
 
 eliteness:
-  number_of_elite_ants: 50
+  number_of_elite_ants: 5
 
 #TUTAJ CHYBA TRZEBA KOD ZMIENIC
 #test_1:
-#    heuristic: DUPA
 
 #Savings hipoteza 3.2 (chyba?)
 test:
-  heuristic: savings
-  seed: 1
-  vaporization: 0.5
-  exploitation_constant: 0.5
-  heuristic_exponent: 1
-  pheromone_exponent: 1
-
-
-
-basic_test:
   heuristic: basic
   seed: 1
   vaporization: 0.9
-  exploitation_constant: 0.5
-  heuristic_exponent: 1
+  exploitation_constant: 1
+  heuristic_exponent: 2
   pheromone_exponent: 1
 
-exploitation_test:
-  heuristic: exploitation
-  seed: 1
-  vaporization: 0.3
-  exploitation_constant: 0.5
-  heuristic_exponent: 1
-  pheromone_exponent: 1
 
+#
+#basic_test:
+#  heuristic: basic
+#  seed: 1
+#  vaporization: 0.9
+#  exploitation_constant: 0.5
+#  heuristic_exponent: 1
+#  pheromone_exponent: 1
+#
+#exploitation_test:
+#  heuristic: exploitation
+#  seed: 1
+#  vaporization: 0.3
+#  exploitation_constant: 0.5
+#  heuristic_exponent: 1
+#  pheromone_exponent: 1
+#
