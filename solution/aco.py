@@ -1,8 +1,5 @@
 import copy
 
-import yaml
-from tests.test_config import AntConstants, PheremoneStrategy, ElitenessStrategy, TestCaseConfig
-
 from solution.ant import Ant
 from solution.move import ant_move
 from solution.pheromone import update_pheromone_after_epoch, update_pheromone_from_the_best_solution
@@ -35,16 +32,16 @@ ANT_CAPACITY = 3
 
 
 class ACO:
-    def __init__(self, config: Config, graph: np.array, pheromone: np.array):
+    def __init__(self, config: Config):
         self.config = config
         self.graph_size = config.graph_size
         self.global_update_strategy = config.global_update_strat
-        self.graph = graph
+        self.graph = config.graph
         self.pheromone_delta = np.zeros((self.graph_size, self.graph_size))
         self.capacity = config.ant_capacity
         self.heuristic = config.heuristic
         self.number_of_ants = config.number_of_ants
-        self.pheromone = pheromone
+        self.pheromone = config.pheromone
         self.current_best_weight = 10000
 
         for idx, element in enumerate(self.graph):
@@ -58,7 +55,7 @@ class ACO:
             self.list_of_ants.append(ant)
 
     def run(self):
-        for i in range(500):
+        for i in range(200):
             for idx, ant in enumerate(self.list_of_ants):
                 self.list_of_ants[idx] = ant_move(ant,self.config)
 
@@ -80,15 +77,15 @@ class ACO:
             loss = self.current_best_weight - best_weight
 
             if loss > 0:
-                print(f"WORST WEIGHT at epoch {i}/50 : {str(worst_weight)}")
+                print(f"WORST WEIGHT at epoch {i+1}/500 : {str(worst_weight)}")
                 # print("WORST MOVES: " + str(worst_list_of_moves))
-                print(f"BEST WEIGHT at epoch {i}/50 : {str(best_weight)} loss = {loss})")
+                print(f"BEST WEIGHT at epoch {i+1}/500 : {str(best_weight)} loss = {loss})")
                 # print("BEST MOVES: " + str(best_list_of_moves))
                 print("************-------------**************")
-
+            print(f"Epoch {i}/200")
             if self.current_best_weight > best_weight:
                 self.current_best_weight = best_weight
-                self.current_best_list_of_moves = best_list_of_moves
+                current_best_list_of_moves = best_list_of_moves
 
             if self.global_update_strategy == 'best_solution':
                 self.pheromone = update_pheromone_from_the_best_solution(best_ant, self.pheromone, self.pheromone_delta, self.config)
@@ -104,24 +101,5 @@ class ACO:
 
         print("BEST MOVES: " + str(self.current_best_weight))
 
-        return self.current_best_weight, self.current_best_list_of_moves
+        return self.current_best_weight, current_best_list_of_moves
 
-#
-# config_dict = yaml.safe_load(open('../tests/config.yaml'))
-#
-# runs = config_dict['runs']
-#
-# ant_constants = AntConstants(yaml_dict=config_dict['ant_constants'])
-#
-# pheromone_strategy = PheremoneStrategy(yaml_dict=config_dict['pheromone'])
-#
-# eliteness_strategy = ElitenessStrategy(yaml_dict=config_dict['eliteness'])
-#
-# test_case_config = TestCaseConfig(pheromone_strategy,ant_constants, eliteness_strategy, config_dict['test'])
-#
-#
-# # config = Config(1,GRAPH_SIZE,NUMBER_OF_ANTS,PHEROMONE,GLOBAL_UPDATE_STRATEGY,PHEROMONE_UPDATE,HEURISTIC,ANT_CAPACITY,EXPLOITATION_CONSTANT,HEURISTIC_EXPONENT,PHEROMONE_EXPONENT,EVAPORATE_RATE,NUMBER_OF_ELITE_ANTS)
-#
-# config = Config.from_test_config(test_case_config, PHEROMONE)
-# aco = ACO(config)
-# aco.run()
